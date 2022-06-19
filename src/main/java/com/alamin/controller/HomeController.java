@@ -2,8 +2,8 @@ package com.alamin.controller;
 
 import com.alamin.dto.UserDTO;
 import com.alamin.models.Language;
-import com.alamin.models.User;
 import com.alamin.utils.Constant;
+import com.alamin.models.CoursesView;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -107,7 +107,7 @@ public class HomeController {
     @GetMapping("/languages/view")
     public String getCheckbox(Model model, @ModelAttribute("languages") Language languages){
 
-        Language language = new Language();
+        CoursesView language = new CoursesView();
         List<String> arr =new ArrayList<>(List.of(new String[]{"Java", "C", "C++", "Python"})) ;
         language.setFavLanguages(arr);
         model.addAttribute("lg", language);
@@ -115,10 +115,10 @@ public class HomeController {
     }
     @PostMapping("/languages/view")
     public String postCheckbox(@ModelAttribute("languages") Language languages){
-        System.out.println(languages.getName());
-        for(String language : languages.getFavLanguages()){
-            System.out.println(language);
-        }
+//        System.out.println(languages.getName());
+//        for(String language : languages.getFavLanguages()){
+//            System.out.println(language);
+//        }
         return "checkboxs";
     }
 

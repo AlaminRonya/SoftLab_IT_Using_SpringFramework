@@ -64,6 +64,11 @@
                             <form:radiobutton path="gender" value="Male"/>Male
                             <form:radiobutton path="gender" value="Female"/>Female
                         </div>
+                        <form:select cssClass="dropdown" path="course">
+                            <form:option selected="true" value="Select Location" disabled="true"/>
+                            <form:options items="${courseList}"/>
+                        </form:select>
+                        <br>
 
                         <div class="form-group">
                             <label>Image Upload</label>

@@ -13,5 +13,4 @@ public class Language {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
-    private List<String> favLanguages;
 }

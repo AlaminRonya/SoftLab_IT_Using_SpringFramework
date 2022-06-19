@@ -12,4 +12,7 @@ public class CourseConverter {
     public CoursesDTO entityToDto(Courses course){
         return new ModelMapper().map(course, CoursesDTO.class);
     }
+    public Courses DtoToEntity(CoursesDTO coursesDTO){
+        return new ModelMapper().map(coursesDTO, Courses.class);
+    }
 }
