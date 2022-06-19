@@ -55,26 +55,31 @@
                         </div>
                         <div class="form-group">
                             <label>Favourite Languages :</label>
-                            <form:checkbox path="favLanguages" value="Java" />Java
-                            <form:checkbox path="favLanguages" value="C++" />C++
-                            <form:checkbox path="favLanguages" value=".Net" />.Net
+                            <c:forEach var="language" items="${languages}">
+                                <br/><form:checkbox path="favLanguages" value="${language.getName()}" /> ${language.getName()}
+                            </c:forEach>
                         </div>
+
                         <div class="form-group">
                             <form:label path="gender">Gender </form:label>
                             <form:radiobutton path="gender" value="Male"/>Male
                             <form:radiobutton path="gender" value="Female"/>Female
                         </div>
-                        <form:select cssClass="dropdown" path="course">
-                            <form:option selected="true" value="Select Location" disabled="true"/>
-                            <form:options items="${courseList}"/>
-                        </form:select>
-                        <br>
+                        <div class="form-group">
+                            <form:select cssClass="dropdown" path="course">
+                                <form:option selected="true" value="Select Course" disabled="true"/>
+                                <form:options items="${allCourses}"/>
+                            </form:select>
+                        </div>
+
+<%--                        <br/>--%>
+<%--                        <br/>--%>
 
                         <div class="form-group">
                             <label>Image Upload</label>
                             <input type="file" name="image" accept="image/*"/>
                         </div>
-
+                        <button type="submit" class="btn btn-primary">Create</button>
                     </form:form>
                 </div>
             </div>

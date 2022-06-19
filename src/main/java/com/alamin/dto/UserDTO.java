@@ -2,7 +2,6 @@ package com.alamin.dto;
 
 import lombok.Data;
 
-import java.util.List;
 
 @Data
 public class UserDTO {
@@ -11,7 +10,7 @@ public class UserDTO {
     private String email;
     private String password;
     private Boolean gender;
-    private List<String> favLanguages;
+    private String favLanguages;
     private String course;
     private String imagePath;
 }

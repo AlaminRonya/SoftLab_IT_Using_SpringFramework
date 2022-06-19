@@ -16,14 +16,21 @@
 
     <h1>Home Page</h1>
     <%--@elvariable id="languages" type=""--%>
-<%--    <form:form action="${pageContext.request.contextPath}/languages/view" method="POST" modelAttribute="languages" >--%>
-<%--        <form:input type="text" name="name" id="name" path="name"  placeholder="Your Name" /><br/>--%>
-<%--        <c:forEach var="language" items="${lg.getFavLanguages()}">--%>
-<%--            <form:checkbox path="favLanguages" value="${language}" />  ${language}--%>
-<%--        </c:forEach>--%>
+    <form:form action="${pageContext.request.contextPath}/languages/view" method="POST" modelAttribute="languages" >
+        <form:input type="text" name="name" id="name" path="name"  placeholder="Your Name" /><br/>
+        <c:forEach var="language" items="${lg}">
+            <form:checkbox path="name" value="${language.getName()}" />  ${language.getName()}<br/>
+        </c:forEach>
 
-<%--        <input type="submit" value="Checkbox" class="btn btn-primary btn-block">--%>
-<%--    </form:form>--%>
+
+        <input type="submit" value="Checkbox" class="btn btn-primary btn-block">
+    </form:form>
+    <form:select cssClass="dropdown" path="course">
+        <form:option selected="true" value="Select Location" disabled="true"/>
+        <form:options items="${allCourses}"/>
+    </form:select>
+
+
 
 </body>
 </html>

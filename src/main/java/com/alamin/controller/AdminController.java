@@ -1,8 +1,10 @@
 package com.alamin.controller;
 
+import com.alamin.dao.CoursesDAO;
 import com.alamin.dto.CoursesDTO;
 import com.alamin.dto.LanguageDTO;
 import com.alamin.models.Language;
+import com.alamin.services.CourseServices;
 import com.alamin.services.LanguageServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,8 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class AdminController {
     @Autowired
     private LanguageServices languageServices;
+    @Autowired
+    private CourseServices courseServices;
     @GetMapping("/language/insert")
     public String languagePage(Model model, @ModelAttribute("languageDTO") LanguageDTO languageDTO){
+
         return "insert_language";
     }
     @PostMapping("/language/insert")
@@ -28,6 +33,7 @@ public class AdminController {
             System.out.println("inserted");
         }
 
+
         return "insert_language";
     }
     @GetMapping("/courses/insert")
@@ -35,7 +41,13 @@ public class AdminController {
         return "insert_courses";
     }
     @PostMapping("/courses/insert")
-    public String addCoursePage(Model model, @ModelAttribute("coursesDTO")CoursesDTO coursesDTO){
+    public String addCoursePage(@ModelAttribute("coursesDTO")CoursesDTO coursesDTO){
+        final Long aLong = courseServices.addCourse(coursesDTO);
+        if (aLong == null){
+            System.out.println("Not Inserted");
+        }else {
+            System.out.println("inserted");
+        }
         return "insert_courses";
     }
 }

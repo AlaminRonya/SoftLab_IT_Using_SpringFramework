@@ -12,8 +12,14 @@ public class CourseServices {
     private CoursesDAO coursesDAO;
     private CourseConverter converter;
 
+
+
     public CourseServices() {
         converter = new CourseConverter();
+    }
+
+    public Long addCourse(CoursesDTO coursesDTO){
+        return coursesDAO.insert(converter.DtoToEntity(coursesDTO));
     }
 
     public Long add(CoursesDTO courseDTO){

@@ -1,7 +1,11 @@
 package com.alamin.controller;
 
+import com.alamin.dao.LanguageDAO;
+import com.alamin.dto.CoursesDTO;
+import com.alamin.dto.LanguageDTO;
 import com.alamin.dto.UserDTO;
 import com.alamin.models.Language;
+import com.alamin.services.UserService;
 import com.alamin.utils.Constant;
 import com.alamin.models.CoursesView;
 import org.apache.commons.io.IOUtils;
@@ -19,17 +23,30 @@ import java.io.*;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
     @Autowired
     private ServletContext servletContext;
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/")
     public String home(){
         return "index";
     }
     @GetMapping("/user/add")
     public String createUser(Model model, @ModelAttribute("userDto") UserDTO userDTO){
+        final List<LanguageDTO> all = userService.getAll();
+//        final List<CoursesDTO> allCourses = userService.getAllCourses();
+//        final List<String> coursesName = allCourses.stream().map(CoursesDTO::getCourseName).collect(Collectors.toList());
+
+//        final List<String> collect = all.stream().map(a -> a.getName()).collect(Collectors.toList());
+
+        model.addAttribute("languages", userService.getAll());
+        model.addAttribute("allCourses", userService.getAllCourses());
+//        model.addAttribute("allCourses", coursesName);
 
         return "createUser";
     }
@@ -38,12 +55,13 @@ public class HomeController {
                           @ModelAttribute("userDto") UserDTO userDTO,
                           @RequestParam("image") MultipartFile file,
                           HttpSession session) throws InterruptedException {
+//        System.out.println(userDTO.getFavLanguages());
+//        System.out.println(userDTO.getCourse());
 
-
-        System.out.println(file.getContentType());
-        System.out.println(file.getName());
+//        System.out.println(file.getContentType());
+//        System.out.println(file.getName());
         String path = session.getServletContext().getRealPath("/")+ Constant.USER_IMAGE_LOCATION +file.getOriginalFilename();
-        System.out.println("-------->"+path);
+//        System.out.println("-------->"+path);
 
         try{
             file.transferTo(new File(path));
@@ -61,6 +79,7 @@ public class HomeController {
 //            InputStream inputStream = new BufferedInputStream(new FileInputStream(path));
 //            FileCopyUtils.copy(inputStream, response.getOutputStream());
 
+//            final List<Language> all = languageDAO.getAll();
             model.addAttribute("msg","Uploaded");
             model.addAttribute("filename",file.getOriginalFilename());
 
@@ -72,29 +91,29 @@ public class HomeController {
 
         }
 
-        return "usershow";
+        return "redirect:/user/add";
     }
 
 
-    @RequestMapping(value = "/getStudentPhoto/{filename}")
-    public void getStudentPhoto(HttpServletResponse response, @PathVariable("filename") String path) throws Exception {
-//        response.setContentType("image/jpeg");
-//
-//
-//        byte[] bytes = path.getBytes();
-//        InputStream inputStream = new ByteArrayInputStream(bytes);
-//        IOUtils.copy(inputStream, response.getOutputStream());
-        File file = new File(path);
-        String mimeType = URLConnection.guessContentTypeFromName(file.getName());
-        if (mimeType == null) {
-            mimeType = "application/octet-stream";
-        }
-        response.setContentType(mimeType);
-        response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() + "\""));
-        response.setContentLength((int) file.length());
-        InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
-        FileCopyUtils.copy(inputStream, response.getOutputStream());
-    }
+//    @RequestMapping(value = "/getStudentPhoto/{filename}")
+//    public void getStudentPhoto(HttpServletResponse response, @PathVariable("filename") String path) throws Exception {
+////        response.setContentType("image/jpeg");
+////
+////
+////        byte[] bytes = path.getBytes();
+////        InputStream inputStream = new ByteArrayInputStream(bytes);
+////        IOUtils.copy(inputStream, response.getOutputStream());
+//        File file = new File(path);
+//        String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+//        if (mimeType == null) {
+//            mimeType = "application/octet-stream";
+//        }
+//        response.setContentType(mimeType);
+//        response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() + "\""));
+//        response.setContentLength((int) file.length());
+//        InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+//        FileCopyUtils.copy(inputStream, response.getOutputStream());
+//    }
 
     @GetMapping("/image-manual-response/{filename}")
     public void getImageAsByteArray(@PathVariable("filename") String filename, HttpServletResponse response) throws IOException {
@@ -105,16 +124,37 @@ public class HomeController {
 
 
     @GetMapping("/languages/view")
-    public String getCheckbox(Model model, @ModelAttribute("languages") Language languages){
+    public String getCheckbox(Model model, @ModelAttribute("languages") Language languages,  @ModelAttribute("course") CoursesDTO coursesDTO){
 
-        CoursesView language = new CoursesView();
-        List<String> arr =new ArrayList<>(List.of(new String[]{"Java", "C", "C++", "Python"})) ;
-        language.setFavLanguages(arr);
-        model.addAttribute("lg", language);
+
+//        Language language = new Language();
+//        language.setName("java");
+
+
+//        System.out.println(all.size());
+//        all.forEach(System.out::println);
+
+//        final List<String> collect = all.stream().map(l -> l.getName()).collect(Collectors.toList());
+
+
+//        List<String> arr =new ArrayList<>(List.of(new String[]{"Java", "C", "C++", "Python"})) ;
+//        language.setFavLanguages(arr);
+        final List<LanguageDTO> all = userService.getAll();
+        model.addAttribute("lg", all);
+//        final List<String> allCourses = userService.getAllCourses();
+//        if (userService.getAllCourses() != null){
+//            model.addAttribute("allCourses", userService.getAllCourses());
+//        }else {
+//            model.addAttribute("allCourses", null);
+//        }
+        model.addAttribute("allCourses", userService.getAllCourses());
+
+//        final List<String> coursesName = allCourses.stream().map(CoursesDTO::getCourseName).collect(Collectors.toList());
+        //model.addAttribute("allCourses", allCourses);
         return "checkboxs";
     }
     @PostMapping("/languages/view")
-    public String postCheckbox(@ModelAttribute("languages") Language languages){
+    public String postCheckbox(@ModelAttribute("languages") Language languages, @ModelAttribute("course") CoursesDTO coursesDTO){
 //        System.out.println(languages.getName());
 //        for(String language : languages.getFavLanguages()){
 //            System.out.println(language);
