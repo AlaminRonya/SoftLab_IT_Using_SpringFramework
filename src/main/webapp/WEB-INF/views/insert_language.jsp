@@ -19,8 +19,8 @@
             <%--@elvariable id="languageDTO" type=""--%>
             <form:form action="${pageContext.request.contextPath}/language/insert" method="post" modelAttribute="languageDTO" >
                 <div class="form-group">
-                    <label for="name">Name</label>
-                    <form:input type="text" cssClass="form-control" id="name" placeholder="Location Name" path="name"/>
+                    <label for="name">Language Name</label>
+                    <form:input type="text" cssClass="form-control" id="name" placeholder="Language Name" path="name"/>
                 </div>
                 <button type="submit" class="btn btn-primary">Create</button>
             </form:form>

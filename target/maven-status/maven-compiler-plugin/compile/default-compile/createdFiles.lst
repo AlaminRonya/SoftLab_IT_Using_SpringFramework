@@ -4,6 +4,7 @@ com\alamin\converter\CourseConverter.class
 com\alamin\dto\UserDTO.class
 com\alamin\models\Courses.class
 com\alamin\models\User.class
+com\alamin\config\Runner.class
 com\alamin\converter\UserConverter.class
 com\alamin\dto\CoursesDTO.class
 com\alamin\services\LanguageServices.class

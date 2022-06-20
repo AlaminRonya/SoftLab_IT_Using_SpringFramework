@@ -1,29 +1,23 @@
 package com.alamin.controller;
 
-import com.alamin.dao.LanguageDAO;
 import com.alamin.dto.CoursesDTO;
 import com.alamin.dto.LanguageDTO;
 import com.alamin.dto.UserDTO;
 import com.alamin.models.Language;
 import com.alamin.services.UserService;
 import com.alamin.utils.Constant;
-import com.alamin.models.CoursesView;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -33,7 +27,8 @@ public class HomeController {
     private UserService userService;
 
     @GetMapping("/")
-    public String home(){
+    public String home(Model model){
+        model.addAttribute("usersDto", userService.getAllUser());
         return "index";
     }
     @GetMapping("/user/add")
@@ -65,6 +60,11 @@ public class HomeController {
 
         try{
             file.transferTo(new File(path));
+            userDTO.setImagePath(file.getOriginalFilename());
+            System.out.println(userDTO);
+            userDTO.setImagePath(file.getOriginalFilename());
+            final Long aLong = userService.addUser(userDTO);
+
 
 //            byte[] data = file.getBytes();
 //            FileOutputStream fos = new FileOutputStream(path);
@@ -80,8 +80,9 @@ public class HomeController {
 //            FileCopyUtils.copy(inputStream, response.getOutputStream());
 
 //            final List<Language> all = languageDAO.getAll();
-            model.addAttribute("msg","Uploaded");
-            model.addAttribute("filename",file.getOriginalFilename());
+
+//            model.addAttribute("msg","Uploaded");
+//            model.addAttribute("filename",file.getOriginalFilename());
 
         }catch (Exception e){
 
@@ -91,7 +92,7 @@ public class HomeController {
 
         }
 
-        return "redirect:/user/add";
+        return "redirect:/";
     }
 
 
@@ -148,6 +149,7 @@ public class HomeController {
 //            model.addAttribute("allCourses", null);
 //        }
         model.addAttribute("allCourses", userService.getAllCourses());
+        System.out.println("-------->"+userService.getAllUser().size());
 
 //        final List<String> coursesName = allCourses.stream().map(CoursesDTO::getCourseName).collect(Collectors.toList());
         //model.addAttribute("allCourses", allCourses);

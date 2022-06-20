@@ -17,7 +17,7 @@ public class User implements Serializable{
     private String name;
     private String email;
     private String password;
-    private Boolean gender;
+    private String gender;
     private String favLanguages;
     private String course;
     private String imagePath;

@@ -19,7 +19,7 @@
             <%--@elvariable id="coursesDTO" type=""--%>
             <form:form action="${pageContext.request.contextPath}/courses/insert" method="post" modelAttribute="coursesDTO" >
                 <div class="form-group">
-                    <label for="name">Name</label>
+                    <label for="name">Course Name</label>
                     <form:input type="text" cssClass="form-control" id="name" placeholder="Course Name" path="courseName"/>
                 </div>
                 <button type="submit" class="btn btn-primary">Create</button>
